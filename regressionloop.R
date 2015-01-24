@@ -1,0 +1,20 @@
+setwd("/home/akchalam/workspace/provdb/ct_data/set1/linear1_pf")
+names<-dir(pattern="csv")
+d <- data.frame()
+for (i in 1:20) {d <- rbind(d,c(i+i, i*i, i/1))}
+print(d)
+for (n in names){
+    #print(n)
+   pattern <- read.csv(file=n,header=T)
+   #print(pattern)
+   frequency.lm <- lm(frequency ~ numtuples, data=pattern)
+   coeffs <- coefficients(frequency.lm)
+   #print(coeffs)
+   newdata <- data.frame(numtuples=1100)
+   freqprediction <- predict(frequency.lm, newdata)
+   #print(freqprediction)
+   output <- data.frame()
+   output <- rbind(output,c(n, freqprediction))
+   write.table(output, file=paste(n,"_pred",".txt"), col.names=FALSE, row.names=FALSE, sep=",")   
+   #print(output)
+}
